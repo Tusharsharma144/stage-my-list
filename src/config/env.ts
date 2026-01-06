@@ -8,4 +8,8 @@ export const env = {
 
   mongoUri: process.env.MONGODB_URI!,
   mongoTestUri: process.env.MONGODB_TEST_URI!,
+
+  redisHost: process.env.REDIS_HOST || "localhost",
+  redisPort: Number(process.env.REDIS_PORT) || 6379,
+  redisTtlSeconds: Number(process.env.REDIS_TTL_SECONDS) || 60,
 };

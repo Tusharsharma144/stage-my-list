@@ -1,5 +1,6 @@
 import { MyListModel } from "../models/myList.model";
 import { redis } from "../cache/redis";
+import { env } from "../config/env";
 
 export class MyListService {
   async addItem(userId: string, contentId: string, contentType: string) {
@@ -48,7 +49,7 @@ export class MyListService {
       hasMore: items.length === limit,
     };
 
-    await redis.set(cacheKey, JSON.stringify(response), "EX", 60);
+    await redis.set(cacheKey, JSON.stringify(response), "EX", env.redisPort);
 
     return response;
   }
