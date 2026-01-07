@@ -1,3 +1,4 @@
+import { MongoServerError } from "mongodb";
 import { MyListModel } from "../models/myList.model";
 import { redis } from "../cache/redis";
 import { env } from "../config/env";
@@ -14,9 +15,8 @@ export class MyListService {
       await this.clearCache(userId);
       return { success: true };
     } catch (err: any) {
-      // Duplicate → treat as success (idempotent)
-      if (err.code === 11000) {
-        return { success: true };
+      if (err instanceof MongoServerError && err.code === 11000) {
+        throw { status: 409, message: "Item already exists in My List" };
       }
       throw err;
     }
